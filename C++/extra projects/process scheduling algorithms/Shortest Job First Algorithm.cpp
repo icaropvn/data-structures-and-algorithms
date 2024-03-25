@@ -30,7 +30,7 @@ void ShortestJobFirst(Processo processos[], int max)
 	{
 		tempo_por_processo = 0;
 		
-		for(int i=1; i<max; i++)
+		for(int i=0; i<max; i++)
 		{
 			if(processos[i].tempo_execucao < menor_tempo_execucao && processos[i].executado == false)
 			{
