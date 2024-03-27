@@ -1,3 +1,6 @@
+// !1 Rever lógica do RR
+// !2 Descobrir como fazer com que o quantum seja proporcional aos outros algoritmos
+
 #include <iostream>
 #include <cstdlib>
 #include <ctime>
@@ -11,6 +14,7 @@ struct Processo {
 
 void FirstComeFirstServed(Processo processos[], int max);
 void ShortestJobFirst(Processo processos[], int max);
+void roundRobin(Processo processos[], int max);
 int escolhaProcessos();
 void gerarProcessos(Processo *processos1, Processo *processos2, Processo *processos3, int tipoProcessos, int quantidadeProcessos);
 void executarTestes(int quantidadeProcessos, Processo *processos1, Processo *processos2, Processo *processos3);
@@ -41,14 +45,14 @@ void FirstComeFirstServed(Processo processos[], int max)
 	int tempo_total = 0, tempo_por_processo = 0;
 	int contador = 0;
 	
-	// loop que simula a execuï¿½ï¿½o dos processos em geral
+	// loop que simula a execu  o dos processos em geral
 	while(contador < max)
 	{
 		tempo_por_processo = 0;
 		
 		cout << "Executando processo " << processos[contador].id << "..." << endl;
 		
-		// loop interno que simula a execuï¿½ï¿½o de cada processo individualmente
+		// loop interno que simula a execu  o de cada processo individualmente
 		for(int i = processos[contador].tempo_execucao; i > 0; i--)
 		{
 			processos[contador].tempo_execucao--;
@@ -56,14 +60,14 @@ void FirstComeFirstServed(Processo processos[], int max)
 			tempo_total++;
 		}
 		
-		// condiï¿½ï¿½o usada quando um processo ï¿½ terminado
+		// condi  o usada quando um processo   terminado
 		if(processos[contador].tempo_execucao == 0)
 			cout << "Processo " << processos[contador].id << " executado por " << tempo_por_processo << " unidades de tempo\n" << endl;
 		
 		contador++;
 	}
 	
-	cout << "Tempo de execuÃ§Ã£o total: " << tempo_total << " unidades de tempo." << endl;
+	cout << "Tempo de execução total: " << tempo_total << " unidades de tempo." << endl;
 }
 
 void ShortestJobFirst(Processo processos[], int max)
@@ -74,7 +78,7 @@ void ShortestJobFirst(Processo processos[], int max)
 	int tempo_total = 0, tempo_por_processo = 0;
 	int contador = 0;
 	
-	// implementaï¿½ï¿½o do algoritmo insertion sort para ordenar os processos
+	// implementa  o do algoritmo insertion sort para ordenar os processos
 	for(i=1; i<max; i++)
 	{
 		temp = processos[i];
@@ -89,14 +93,14 @@ void ShortestJobFirst(Processo processos[], int max)
 		processos[j+1].tempo_execucao = temp.tempo_execucao;
 	}
 	
-	// loop que simula a execuï¿½ï¿½o dos processos em geral
+	// loop que simula a execu  o dos processos em geral
 	while(contador < max)
 	{
 		tempo_por_processo = 0;
 		
 		cout << "Executando processo " << processos[contador].id << "..." << endl;
 		
-		// loop interno que simula a execuï¿½ï¿½o de cada processo individualmente
+		// loop interno que simula a execu  o de cada processo individualmente
 		for(int i = processos[contador].tempo_execucao; i > 0; i--)
 		{
 			processos[contador].tempo_execucao--;
@@ -104,7 +108,7 @@ void ShortestJobFirst(Processo processos[], int max)
 			tempo_total++;
 		}
 		
-		// condiï¿½ï¿½o usada quando um processo ï¿½ terminado
+		// condi  o usada quando um processo   terminado
 		if(processos[contador].tempo_execucao == 0)
 			cout << "Processo " << processos[contador].id << " executado por " << tempo_por_processo << " unidades de tempo\n" << endl;
 		
@@ -112,6 +116,38 @@ void ShortestJobFirst(Processo processos[], int max)
 	}
 	
 	cout << "Tempo de execucao total: " << tempo_total << " unidades de tempo." << endl;
+}
+
+void roundRobin(Processo processos[], int max)
+{
+    int contadorDeCiclo = 1, quantum = 10, contador = 0, tempo_total = 0;
+
+    while(contador < max)
+    {
+        cout << "Ciclo " << contadorDeCiclo << " ---------------------------------" << endl;
+        
+        for (int i = 0; i < max; i++)
+        {
+            processos[i].tempo_execucao -= quantum;
+            tempo_total += quantum;
+            
+            if(processos[i].tempo_execucao > 0)
+            {
+                cout << "Executando processo " << processos[i].id << "..." << endl;
+                cout << "Tempo Restante: " << processos[i].tempo_execucao << " quantum\n\n";
+            }
+            else if(processos[i].tempo_execucao <= 0)
+            {
+                processos[i].tempo_execucao = 0;
+                contador++;
+                cout << "Processo " << processos[i].id << " executado\n\n";
+            }
+        }
+        
+        contadorDeCiclo++;
+    }
+    
+    cout << "Tempo de execucao total: " << tempo_total << " unidades de tempo." << endl;
 }
 
 int escolhaProcessos()
@@ -130,7 +166,7 @@ int escolhaProcessos()
 
 void gerarProcessos(Processo *processos1, Processo *processos2, Processo *processos3, int tipoProcessos, int quantidadeProcessos)
 {
-	int min_rand, max_rand, counter = 1;
+	int min_rand, max_rand;
 	
 	switch(tipoProcessos)
 	{
@@ -153,15 +189,13 @@ void gerarProcessos(Processo *processos1, Processo *processos2, Processo *proces
 	
 	for(int i=0; i<quantidadeProcessos; i++)
 	{
-		processos1[i].id = counter;
-		processos2[i].id = counter;
-		processos3[i].id = counter;
+		processos1[i].id = i+1;
+		processos2[i].id = i+1;
+		processos3[i].id = i+1;
 		
 		processos1[i].tempo_execucao = min_rand + (rand() % (max_rand - min_rand + 1));
 		processos2[i].tempo_execucao = processos1[i].tempo_execucao;
 		processos3[i].tempo_execucao = processos1[i].tempo_execucao;
-		
-		counter++;
 	}
 }
 
@@ -177,7 +211,7 @@ void executarTestes(int quantidadeProcessos, Processo *processos1, Processo *pro
     auto fim = chrono::high_resolution_clock::now();
     auto fcfs = chrono::duration_cast<chrono::microseconds>(fim - inicio);
     
-    cout << "\nTempo de duracao do First Come First Served: " << fcfs.count() << " microssegundos\n" << endl;
+    cout << "Tempo de duracao do First Come First Served: " << fcfs.count() << " microssegundos\n" << endl;
     
     cout << "------------------------------------------------------" << endl;
     cout << "\nExecutando SHORTEST JOB FIRST...\n" << endl;
@@ -189,23 +223,22 @@ void executarTestes(int quantidadeProcessos, Processo *processos1, Processo *pro
     fim = chrono::high_resolution_clock::now();
     auto sjf = chrono::duration_cast<chrono::microseconds>(fim - inicio);
     
-    cout << "\nTempo de duracao do Shortest Job First: " << sjf.count() << " microssegundos\n" << endl;
+    cout << "Tempo de duracao do Shortest Job First: " << sjf.count() << " microssegundos\n" << endl;
     
     cout << "------------------------------------------------------" << endl;
     cout << "\nExecutando ROUND ROBIN...\n" << endl;
     
     inicio = chrono::high_resolution_clock::now();
     
-    // substituir por algoritmo do round robin
-	cout << "O algoritmo RR esta atualmente indisponivel :(" << endl;
+	roundRobin(processos3, quantidadeProcessos);
 	
 	fim = chrono::high_resolution_clock::now();
     auto rr = chrono::duration_cast<chrono::microseconds>(fim - inicio);
 	
-	cout << "\nTempo de duracao do Round-Robin: " << rr.count() << " microssegundos\n" << endl;
+	cout << "Tempo de duracao do Round-Robin: " << rr.count() << " microssegundos\n" << endl;
 	
 	cout << "------------------------------------------------------" << endl;
-	cout << "\nResultados:\n" << endl;
+	cout << "Resultados:\n" << endl;
 	cout << "First Come First Served: " << fcfs.count() << " microssegundos" << endl;
 	cout << "Shortest Job First: " << sjf.count() << " microssegundos" << endl;
 	cout << "Round Robin: " << rr.count() << " microssegundos" << endl;
