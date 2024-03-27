@@ -2,7 +2,6 @@
 #include <cstdlib>
 #include <ctime>
 #include <chrono>
-//#include "algoritmos_escalonamento.h"
 using namespace std;
 
 struct Processo {
@@ -12,32 +11,27 @@ struct Processo {
 
 void FirstComeFirstServed(Processo processos[], int max);
 void ShortestJobFirst(Processo processos[], int max);
-int escolhaDoAlgoritmo();
 int escolhaProcessos();
-void gerarProcessos(Processo *processos, int tipoProcessos, int quantidadeProcessos);
-void executarAlgoritmo(int algoritmo, int quantidadeProcessos, Processo *processos);
+void gerarProcessos(Processo *processos1, Processo *processos2, Processo *processos3, int tipoProcessos, int quantidadeProcessos);
+void executarTestes(int quantidadeProcessos, Processo *processos1, Processo *processos2, Processo *processos3);
 
 int main()
 {	
 	srand(time(NULL));
 	
 	int quantidadeProcessos, tipoProcessos = 0;
-	int algoritmo = escolhaDoAlgoritmo();
 	
-	if(algoritmo != 4)
-	{
-		tipoProcessos = escolhaProcessos();
-		
-		cout << "\nInsira a quantidade de processos a serem executados: ";
-		cin >> quantidadeProcessos;
-		cout << endl;
-		
-		Processo processos[quantidadeProcessos];
-		
-		gerarProcessos(processos, tipoProcessos, quantidadeProcessos);
-		
-		executarAlgoritmo(algoritmo, quantidadeProcessos, processos);
-	}
+	tipoProcessos = escolhaProcessos();
+	
+	cout << "\nInsira a quantidade de processos a serem executados: ";
+	cin >> quantidadeProcessos;
+	cout << endl;
+	
+	Processo processos1[quantidadeProcessos], processos2[quantidadeProcessos], processos3[quantidadeProcessos];
+	
+	gerarProcessos(processos1, processos2, processos3, tipoProcessos, quantidadeProcessos);
+	
+	executarTestes(quantidadeProcessos, processos1, processos2, processos3);
 	
 	return 0;
 }
@@ -120,28 +114,13 @@ void ShortestJobFirst(Processo processos[], int max)
 	cout << "Tempo de execucao total: " << tempo_total << " unidades de tempo." << endl;
 }
 
-int escolhaDoAlgoritmo()
-{
-	int resposta;
-	
-	while(resposta > 4 || resposta < 1)
-	{
-		cout << "Escolha um algoritmo para testar:" << endl;
-		cout << "[1] First Come, First Served\n[2] Shortest Job First\n[3] Round-Robin\n[4] Sair" << endl;
-		cout << "R: ";
-		cin >> resposta;
-	}
-	
-	return resposta;
-}
-
 int escolhaProcessos()
 {
 	int tipoProcessos = 0;
 	
 	while(tipoProcessos < 1 || tipoProcessos > 3)
 	{
-		cout << "\nQual teste deseja fazer?" << endl;
+		cout << "Qual teste deseja fazer?" << endl;
 		cout << "[1] Processos Curtos\n[2] Processos Medios\n[3] Processos Longos\nR: ";
 		cin >> tipoProcessos;
 	}
@@ -149,7 +128,7 @@ int escolhaProcessos()
 	return tipoProcessos;
 }
 
-void gerarProcessos(Processo *processos, int tipoProcessos, int quantidadeProcessos)
+void gerarProcessos(Processo *processos1, Processo *processos2, Processo *processos3, int tipoProcessos, int quantidadeProcessos)
 {
 	int min_rand, max_rand, counter = 1;
 	
@@ -174,32 +153,60 @@ void gerarProcessos(Processo *processos, int tipoProcessos, int quantidadeProces
 	
 	for(int i=0; i<quantidadeProcessos; i++)
 	{
-		processos[i].id = counter;
-		processos[i].tempo_execucao = min_rand + (rand() % (max_rand - min_rand + 1));
+		processos1[i].id = counter;
+		processos2[i].id = counter;
+		processos3[i].id = counter;
+		
+		processos1[i].tempo_execucao = min_rand + (rand() % (max_rand - min_rand + 1));
+		processos2[i].tempo_execucao = processos1[i].tempo_execucao;
+		processos3[i].tempo_execucao = processos1[i].tempo_execucao;
 		
 		counter++;
 	}
 }
 
-void executarAlgoritmo(int algoritmo, int quantidadeProcessos, Processo *processos)
+void executarTestes(int quantidadeProcessos, Processo *processos1, Processo *processos2, Processo *processos3)
 {
+    cout << "------------------------------------------------------" << endl;
+    cout << "\nExecutando FIRST COME FIRST SERVED...\n" << endl;
+    
 	auto inicio = chrono::high_resolution_clock::now();
 	
-	switch(algoritmo)
-	{
-		case 1:
-			FirstComeFirstServed(processos, quantidadeProcessos);
-			break;
-		case 2:
-			ShortestJobFirst(processos, quantidadeProcessos);
-			break;
-		case 3:
-			cout << "\nO algoritmo RR esta atualmente indisponivel :(" << endl;
-			break;
-	}
+	FirstComeFirstServed(processos1, quantidadeProcessos);
+    
+    auto fim = chrono::high_resolution_clock::now();
+    auto fcfs = chrono::duration_cast<chrono::microseconds>(fim - inicio);
+    
+    cout << "\nTempo de duracao do First Come First Served: " << fcfs.count() << " microssegundos\n" << endl;
+    
+    cout << "------------------------------------------------------" << endl;
+    cout << "\nExecutando SHORTEST JOB FIRST...\n" << endl;
+    
+    inicio = chrono::high_resolution_clock::now();
+    
+	ShortestJobFirst(processos2, quantidadeProcessos);
+
+    fim = chrono::high_resolution_clock::now();
+    auto sjf = chrono::duration_cast<chrono::microseconds>(fim - inicio);
+    
+    cout << "\nTempo de duracao do Shortest Job First: " << sjf.count() << " microssegundos\n" << endl;
+    
+    cout << "------------------------------------------------------" << endl;
+    cout << "\nExecutando ROUND ROBIN...\n" << endl;
+    
+    inicio = chrono::high_resolution_clock::now();
+    
+    // substituir por algoritmo do round robin
+	cout << "O algoritmo RR esta atualmente indisponivel :(" << endl;
 	
-	auto fim = chrono::high_resolution_clock::now();
-	auto duracao = chrono::duration_cast<std::chrono::microseconds>(fim - inicio);
+	fim = chrono::high_resolution_clock::now();
+    auto rr = chrono::duration_cast<chrono::microseconds>(fim - inicio);
 	
-	cout << "\nTempo de duracao real do algoritmo: " << duracao.count() << " microssegundos\n" << endl;
+	cout << "\nTempo de duracao do Round-Robin: " << rr.count() << " microssegundos\n" << endl;
+	
+	cout << "------------------------------------------------------" << endl;
+	cout << "\nResultados:\n" << endl;
+	cout << "First Come First Served: " << fcfs.count() << " microssegundos" << endl;
+	cout << "Shortest Job First: " << sjf.count() << " microssegundos" << endl;
+	cout << "Round Robin: " << rr.count() << " microssegundos" << endl;
 }
