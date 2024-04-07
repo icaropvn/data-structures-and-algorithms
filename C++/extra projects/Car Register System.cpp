@@ -2,7 +2,7 @@
 #include <iomanip>
 using namespace std;
 
-const int MAX_CARS = 2;
+const int MAX_CARS = 100;
 
 struct Node {
 	string name, brand, model;
@@ -78,7 +78,7 @@ int main()
 							cout << "\nRegister deleted with success!\nThere are " << q.size << " registers left in the queue.\n" << endl;
 							break;
 						}
-						else if(delete_confirm == "N" || delete_confirm == "n" || delete_confirm == "Não" || delete_confirm == "não" || delete_confirm == "Nao" || delete_confirm == "nao")
+						else if(delete_confirm == "N" || delete_confirm == "n" || delete_confirm == "Nï¿½o" || delete_confirm == "nï¿½o" || delete_confirm == "Nao" || delete_confirm == "nao")
 						{
 							cout << "\nRight! The removing operation was canceled. The queue is intact.\n" << endl;
 							break;
