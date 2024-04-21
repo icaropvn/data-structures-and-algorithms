@@ -15,8 +15,7 @@ void printTable(int table[]);
 int main()
 {
     int table[SIZE];
-    int valueToInsert, valueFound;
-    int option, id;
+    int option, value, found;
 
     initTable(table);
 
@@ -28,26 +27,25 @@ int main()
         switch(option)
         {
             case 1:
-                valueToInsert = getPerson();
+                printf("\nInsert the value to add: ");
+                scanf("%i", &value);
 
-                insert(table, valueToInsert);
+                insert(table, value);
 
                 if(isFull(table) == 0)
-                    printf("Value added to the Table at index %i by the Hash Function!\n", hashFunction(valueToInsert));
+                    printf("Value added to the Table at index %i by the Hash Function!\n", hashFunction(value));
 
                 break;
             case 2:
                 printf("\nInsert the value to search: ");
-                scanf("%i", &id);
+                scanf("%i", &value);
 
-                valueFound = search(table, id);
+                found = search(table, value);
 
-                if(valueFound != -1)
-                {
-                    printf("\nValue found at index %02i!\n", valueFound);
-                }
+                if(found != -1)
+                    printf("\nValue found at index %02i!\n", found);
                 else
-                    printf("\nValue doesn't exist in the Table.\n");
+                    printf("\nValue not found in the Table.\n");
 
                 break;
             case 3:
@@ -68,9 +66,7 @@ int main()
     return 0;
 }
 
-// Hash Table functions
-
-void initTable(int table[])
+void initTable(int *table)
 {
     // for que define todos os valores da tabela como -1
     for(int i=0; i<SIZE; i++)
@@ -104,29 +100,29 @@ void insert(int table[], int data)
 {
     if(isFull(table) != 1)
     {
-        int arrayPosition = hashFunction(data);
+        int id = hashFunction(data);
 
-        while(table[arrayPosition] != -1)
+        while(table[id] != -1)
         {
-            arrayPosition = hashFunction(arrayPosition + 1);
+            id = hashFunction(id + 1);
         }
 
-        table[arrayPosition] = data;
+        table[id] = data;
     }
     else
         printf("\nThe Hash Table is full. You can't add more values.\n");
 }
 
-int search(int table[], int id)
+int search(int table[], int element)
 {
-    int arrayPosition = hashFunction(id);
+    int id = hashFunction(element);
 
-    while(table[arrayPosition] != -1)
+    while(table[id] != -1)
     {
-        if(table[arrayPosition] == id)
-            return arrayPosition;
+        if(table[id] == element)
+            return id;
         else
-            arrayPosition = hashFunction(arrayPosition + 1);
+            id = hashFunction(id + 1);
     }
 
     return -1;
@@ -141,11 +137,6 @@ void printTable(int table[])
         if(table[i] == -1)
             printf(" [Index %02i] ---\n", i);
         else
-        {
-            printf(" [Index %02i]\n", i);
-            printPerson(table[i]);
-        }    
-        
-        printf("\n------------------------------\n");
+            printf(" [Index %02i] %03i\n", i, table[i]);
     }
 }
