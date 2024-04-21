@@ -132,7 +132,6 @@ void printList(List *list)
 
 void initTable(List table[])
 {
-    // for que define todos os valores da tabela como -1
     for(int i=0; i<SIZE; i++)
     {
         initList(&table[i]);
