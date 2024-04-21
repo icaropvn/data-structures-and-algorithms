@@ -5,50 +5,17 @@
 #define MAX 15
 #define SIZE 31
 
-typedef struct {
-    int day, month, year;
-} Date;
-
-typedef struct {
-    char street[50], block[50], city[50], country[50];
-    int num, zip;
-} Adress;
-
-typedef struct {
-    int code;
-    Date dateSignature;
-    char position[50];
-    float income;
-} Contract;
-
-typedef struct {
-    int id;
-    char name[50];
-    Date birthDate;
-    Adress personAdress;
-    Contract personContract;
-} Person;
-
-void printDate(Date date);
-void printAdress(Adress adress);
-void printContract(Contract contract);
-void printPerson(Person person);
-Date getDate();
-Adress getAdress();
-Contract getContract();
-Person getPerson();
-
-void initTable(Person table[]);
+void initTable(int table[]);
 int hashFunction(int key);
-int isFull(Person table[]);
-void insert(Person table[], Person data);
-Person* search(Person table[], int element);
-void printTable(Person table[]);
+int isFull(int table[]);
+void insert(int table[], int data);
+int search(int table[], int element);
+void printTable(int table[]);
 
 int main()
 {
-    Person table[SIZE];
-    Person personToInsert, *personFound;
+    int table[SIZE];
+    int valueToInsert, valueFound;
     int option, id;
 
     initTable(table);
@@ -57,33 +24,30 @@ int main()
     {
         printf("\nChoose an option:\n[1] - Insert\n[2] - Search Value\n[3] - Print Table\n[4] - Exit\nR: ");
         scanf("%i", &option);
-        getchar(); // limpa o buffer do teclado
 
         switch(option)
         {
             case 1:
-                personToInsert = getPerson();
+                valueToInsert = getPerson();
 
-                insert(table, personToInsert);
+                insert(table, valueToInsert);
 
                 if(isFull(table) == 0)
-                    printf("Person added to the Table at index %i by the Hash Function!\n", hashFunction(personToInsert.id));
+                    printf("Value added to the Table at index %i by the Hash Function!\n", hashFunction(valueToInsert));
 
                 break;
             case 2:
-                printf("\nInsert the person ID to search: ");
+                printf("\nInsert the value to search: ");
                 scanf("%i", &id);
 
-                personFound = search(table, id);
+                valueFound = search(table, id);
 
-                if(personFound)
+                if(valueFound != -1)
                 {
-                    printf("\nThe person was found at index %02i!\n", hashFunction(personFound->id));
-                    printf("Here's the information about the data searched:\n");
-                    printPerson(*personFound);
+                    printf("\nValue found at index %02i!\n", valueFound);
                 }
                 else
-                    printf("\nPerson doesn't exist in the Table.\n");
+                    printf("\nValue doesn't exist in the Table.\n");
 
                 break;
             case 3:
@@ -104,142 +68,14 @@ int main()
     return 0;
 }
 
-// structs prints functions
-
-void printDate(Date date)
-{
-    printf("%02i/%02i/%4i\n", date.day, date.month, date.year);
-}
-
-void printAdress(Adress adress)
-{
-    printf("\nAdress ===\n");
-    printf("  Street: %s", adress.street);
-    printf("  Block: %s", adress.block);
-    printf("  City: %s", adress.city);
-    printf("  Country: %s", adress.city);
-    printf("  Number: %i\n", adress.num);
-    printf("  ZIP: %i\n", adress.zip);
-}
-
-void printContract(Contract contract)
-{
-    printf("\nContract %i ===\n", contract.code);
-    printf("  Position: %s", contract.position);
-    printf("  Income: R$%.2f\n", contract.income);
-    printf("  Date of admission: ");
-    printDate(contract.dateSignature);
-}
-
-void printPerson(Person person)
-{
-    printf("\nPerson ID: %i\n", person.id);
-    printf("\nPersonal Information ===\n");
-    printf("  Name: %s", person.name);
-    printf("  Birth Date: ");
-    printDate(person.birthDate);
-    printAdress(person.personAdress);
-    printContract(person.personContract);
-}
-
-// structs reading functions
-
-Date getDate()
-{
-    Date date;
-
-    printf("\nInsert the day: ");
-    scanf("%i", &date.day);
-
-    printf("\nInsert the month: ");
-    scanf("%i", &date.month);
-
-    printf("\nInsert the year: ");
-    scanf("%i", &date.year);
-
-    getchar();
-
-    return date;
-}
-
-Adress getAdress()
-{
-    Adress adress;
-
-    printf("\nInsert the street: ");
-    fgets(adress.street, 49, stdin);
-
-    printf("\nInsert the block: ");
-    fgets(adress.block, 49, stdin);
-
-    printf("\nInsert the city: ");
-    fgets(adress.city, 49, stdin);
-
-    printf("\nInsert the country: ");
-    fgets(adress.country, 49, stdin);
-
-    printf("\nInsert the number: ");
-    scanf("%i", &adress.num);
-
-    printf("\nInsert the ZIP: ");
-    scanf("%i", &adress.zip);
-
-    getchar();
-
-    return adress;
-}
-
-Contract getContract()
-{
-    Contract contract;
-
-    printf("\nInsert the contract code: ");
-    scanf("%i", &contract.code);
-
-    printf("\nInsert the signature date: ");
-    contract.dateSignature = getDate();
-
-    printf("\nInsert the position: ");
-    fgets(contract.position, 49, stdin);
-
-    printf("\nInsert the income: ");
-    scanf("%f", &contract.income);
-
-    getchar();
-
-    return contract;
-}
-
-Person getPerson()
-{
-    Person person;
-
-    printf("\nInsert the person's ID: ");
-    scanf("%i", &person.id);
-
-    getchar();
-
-    printf("\nInsert the name: ");
-    fgets(person.name, 49, stdin);
-
-    printf("\nInsert the birth date: ");
-    person.birthDate = getDate();
-
-    person.personAdress = getAdress();
-
-    person.personContract = getContract();
-
-    return person;
-}
-
 // Hash Table functions
 
-void initTable(Person table[])
+void initTable(int table[])
 {
     // for que define todos os valores da tabela como -1
     for(int i=0; i<SIZE; i++)
     {
-        table[i].id = -1;
+        table[i] = -1;
     }
 }
 
@@ -248,13 +84,13 @@ int hashFunction(int key)
     return key % SIZE;
 }
 
-int isFull(Person table[])
+int isFull(int table[])
 {
     int counter = 0;
 
     for(int i=0; i<SIZE; i++)
     {
-        if(table[i].id != -1)
+        if(table[i] != -1)
             counter++;
     }
 
@@ -264,13 +100,13 @@ int isFull(Person table[])
         return 0;
 }
 
-void insert(Person table[], Person data)
+void insert(int table[], int data)
 {
     if(isFull(table) != 1)
     {
-        int arrayPosition = hashFunction(data.id);
+        int arrayPosition = hashFunction(data);
 
-        while(table[arrayPosition].id != -1)
+        while(table[arrayPosition] != -1)
         {
             arrayPosition = hashFunction(arrayPosition + 1);
         }
@@ -281,28 +117,28 @@ void insert(Person table[], Person data)
         printf("\nThe Hash Table is full. You can't add more values.\n");
 }
 
-Person* search(Person table[], int id)
+int search(int table[], int id)
 {
     int arrayPosition = hashFunction(id);
 
-    while(table[arrayPosition].id != -1)
+    while(table[arrayPosition] != -1)
     {
-        if(table[arrayPosition].id == id)
-            return &table[arrayPosition];
+        if(table[arrayPosition] == id)
+            return arrayPosition;
         else
             arrayPosition = hashFunction(arrayPosition + 1);
     }
 
-    return NULL;
+    return -1;
 }
 
-void printTable(Person table[])
+void printTable(int table[])
 {
     printf("\n");
 
     for(int i=0; i<SIZE; i++)
     {
-        if(table[i].id == -1)
+        if(table[i] == -1)
             printf(" [Index %02i] ---\n", i);
         else
         {
