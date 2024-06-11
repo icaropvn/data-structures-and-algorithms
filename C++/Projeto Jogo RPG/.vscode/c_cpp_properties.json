@@ -8,7 +8,8 @@
                 "C:/MinGW/lib/gcc/mingw32/6.3.0/include/c++/mingw32",
                 "C:/MinGW/lib/gcc/mingw32/6.3.0/include/c++/backward",
                 "C:/MinGW/lib/gcc/mingw32/6.3.0/include",
-                "C:/MinGW/include"
+                "C:/MinGW/include",
+                "C:/boost/boost_1_85_0"
             ],
             "defines": [
                 "_DEBUG",
@@ -18,8 +19,8 @@
             "windowsSdkVersion": "10.0.22621.0",
             "cStandard": "c17",
             "cppStandard": "c++17",
-            "intelliSenseMode": "windows-msvc-x64",
-            "compilerPath": "C:/Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.40.33807/bin/Hostx64/x64/cl.exe"
+            "intelliSenseMode": "windows-gcc-x86",
+            "compilerPath": "C:/MinGW/bin/g++.exe"
         }
     ],
     "version": 4
