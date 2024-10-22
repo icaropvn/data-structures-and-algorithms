@@ -1,5 +1,5 @@
 // Inserting in a more efficient way (version 3)
-// this version avoids recursion and return to make the process more efficient
+// this version avoids recursion and returns to make the process more efficient
 
 #include <stdio.h>
 #include <stdlib.h>
