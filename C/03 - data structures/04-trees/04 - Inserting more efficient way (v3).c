@@ -1,4 +1,5 @@
-// Inserting elements without return (version 2)
+// Inserting in a more efficient way (version 3)
+// this version avoids recursion and return to make the process more efficient
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -57,19 +58,22 @@ int main() {
 }
 
 void insert(Node **root, int value) {
-	if(*root == NULL) {
-		*root = (Node*)malloc(sizeof(Node));
-		
-		(*root)->value = value;
-		(*root)->left = NULL;
-		(*root)->right = NULL;
-	}
-	else {
-		if(value < (*root)->value)
-			insert(&((*root)->left), value);
+	Node *aux = *root;
+	
+	while(aux) {
+		if(value < aux->value)
+			root = &aux->left;
 		else
-			insert(&((*root)->right), value);
+			root = &aux->right;
+		aux = *root;
 	}
+	
+	aux = malloc(sizeof(Node));
+	aux->value = value;
+	aux->left = NULL;
+	aux->right = NULL;
+	
+	*root = aux;
 }
 
 void printPreOrder(Node *root) {
