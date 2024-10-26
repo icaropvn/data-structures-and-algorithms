@@ -1,4 +1,4 @@
-// Printing binary trees - 2 versions
+// Searching values in binary trees (version 2 - iterative)
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -10,6 +10,7 @@ typedef struct Node {
 } Node;
 
 Node* insert(Node *root, int value);
+Node* search(Node *root, int value);
 
 void printPreOrder(Node *root);
 void printInOrder(Node *root);
@@ -23,7 +24,7 @@ int main() {
 	
 	while(1) {
 		printf("What would you like to do?\n");
-		printf("[1] Insert value\n[2] Print tree (all traversals)\n[3] Exit\nR: ");
+		printf("[1] Insert value\n[2] Print tree (all traversals)\n[3] Search a value\n[4] Exit\nR: ");
 		scanf("%i", &option);
 		
 		switch(option) {
@@ -50,14 +51,25 @@ int main() {
 					printf("\nThe tree is empty. Insert something before printing.\n\n");
 				break;
 			case 3:
+				printf("\nInform the value to search: ");
+				scanf("%i", &value);
+				
+				searchResult = search(root, value);
+				
+				if(searchResult == NULL)
+					printf("\nThe value isn't in the tree.\n\n");
+				else
+					printf("\nThe value was found!\n\n");
+				break;
+			case 4:
 				printf("\nGoodbye!\n");
 				break;
 			default:
-				printf("\nThe option is invalid.\n");
+				printf("\nThe option is invalid.\n\n");
 				break;
 		}
 		
-		if(option == 3)
+		if(option == 4)
 			break;
 	}
 	
@@ -72,7 +84,7 @@ Node* insert(Node *root, int value) {
 		new_node->left = NULL;
 		new_node->right = NULL;
 		
-		printf("\nThe value was inserted into the tree.\n");
+		printf("\nThe value was successfully inserted into the tree.\n");
 		
 		return new_node;
 	}
@@ -86,6 +98,21 @@ Node* insert(Node *root, int value) {
 		
 		return root;
 	}
+}
+
+Node* search(Node *root, int value) {
+	while(root != NULL) {
+		if(value == root->value)
+			return root;
+		else {
+			if(value < root->value)
+				root = root->left;
+			else
+				root = root->right;
+		}
+	}
+	
+	return NULL;
 }
 
 void printPreOrder(Node *root) {
