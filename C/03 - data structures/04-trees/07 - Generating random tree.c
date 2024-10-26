@@ -102,7 +102,10 @@ int main() {
 				printf("\nWhich's the maximum value you want your tree to have?\nR: ");
 				scanf("%i", &max_range);
 				
-				createRandomTree(&root, elements, min_range, max_range);
+				if(elements > (max_range - min_range))
+					printf("\nError: The elements quantity is greater than the range chosen.\n\n");
+				else
+					createRandomTree(&root, elements, min_range, max_range);
 				break;
 			case 5:
 				printf("\nGoodbye!\n");
