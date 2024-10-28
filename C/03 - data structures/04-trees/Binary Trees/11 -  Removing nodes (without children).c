@@ -1,4 +1,11 @@
-// Creating a function to count the binary tree leaves number
+/*
+
+Creating a function to remove nodes from the tree
+
+The removeNode function encompass the 3 removing situations:
+leaf nodes, 1 child nodes, and 2 children nodes.
+
+*/ 
 
 #include <stdio.h>
 #include <stdlib.h>
