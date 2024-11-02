@@ -1,4 +1,4 @@
-// Creating a function to do the LEFT ROTATION
+// Creating functions to do double rotations (rightLeft and leftRight)
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -19,6 +19,9 @@ int nodeHeight(Node *node);
 int higherHeight(int leftHeight, int rightHeight);
 int balanceFactor(Node *node);
 Node* leftRotation(Node *root);
+Node* rightRotation(Node *root);
+Node* rightLeftRotation(Node *root);
+Node* leftRightRotation(Node *root);
 
 void printPreOrder(Node *root);
 void printInOrder(Node *root);
@@ -218,9 +221,34 @@ Node* leftRotation(Node *root) {
 	root->right = aux;
 	
 	root->height = higherHeight(nodeHeight(root->left), nodeHeight(root->right)) + 1;
-	child->height = higherHeight(nodeHeight(root->left), nodeHeight(root->right)) + 1;
+	child->height = higherHeight(nodeHeight(child->left), nodeHeight(child->right)) + 1;
 	
 	return child;
+}
+
+Node* rightRotation(Node *root) {
+	Node *child, *aux;
+	
+	child = root->left;
+	aux = child->right;
+	
+	child->right = root;
+	root->left = aux;
+	
+	root->height = higherHeight(nodeHeight(root->left), nodeHeight(root->right)) + 1;
+	child->height = higherHeight(nodeHeight(child->left), nodeHeight(child->right)) + 1;
+	
+	return child;
+}
+
+Node* rightLeftRotation(Node *root) {
+	root->right = rightRotation(root->right);
+	return leftRotation(root);
+}
+
+Node* leftRightRotation(Node *root) {
+	root->left = leftRotation(root->left);
+	return rightRotation(root);
 }
 
 void printPreOrder(Node *root) {

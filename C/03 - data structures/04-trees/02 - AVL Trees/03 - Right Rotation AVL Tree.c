@@ -16,7 +16,7 @@ Node* search(Node *root, int value);
 Node* removeNode(Node *root, int value);
 
 int nodeHeight(Node *node);
-int higherHeight(int leftHeight, int eightHeight);
+int higherHeight(int leftHeight, int rightHeight);
 int balanceFactor(Node *node);
 Node* leftRotation(Node *root);
 Node* rightRotation(Node *root);
@@ -197,7 +197,7 @@ int nodeHeight(Node *node) {
 		return node->height;
 }
 
-int higherHeight(int leftHeight, int eightHeight) {
+int higherHeight(int leftHeight, int rightHeight) {
 	return (leftHeight > rightHeight)? leftHeight: rightHeight;
 }
 

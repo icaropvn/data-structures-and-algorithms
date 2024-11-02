@@ -1,4 +1,4 @@
-// Creating a function to do the LEFT ROTATION
+// Creating functions to do double rotations (rightLeft and leftRight)
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -19,6 +19,10 @@ int nodeHeight(Node *node);
 int higherHeight(int leftHeight, int rightHeight);
 int balanceFactor(Node *node);
 Node* leftRotation(Node *root);
+Node* rightRotation(Node *root);
+Node* rightLeftRotation(Node *root);
+Node* leftRightRotation(Node *root);
+Node* balanceTree(Node *root);
 
 void printPreOrder(Node *root);
 void printInOrder(Node *root);
@@ -107,8 +111,7 @@ Node* createNode(int value) {
 
 Node* insert(Node *root, int value) {
 	if(root == NULL) {
-		root = createNode(value);
-		return root;
+		return createNode(value);
 	}
 	else {
 		if(value < root->value)
@@ -116,10 +119,14 @@ Node* insert(Node *root, int value) {
 		else if(value > root->value)
 			root->right = insert(root->right, value);
 		else
-			printf("\nThe value has already been added to the tree.\n");
-		
-		return root;
+			printf("\nError: The value has already been added to the tree.\n");
 	}
+	
+	root->height = higherHeight(nodeHeight(root->left), nodeHeight(root->right)) + 1;
+	
+	root = balanceTree(root);
+	
+	return root;
 }
 
 Node* search(Node *root, int value) {
@@ -218,9 +225,52 @@ Node* leftRotation(Node *root) {
 	root->right = aux;
 	
 	root->height = higherHeight(nodeHeight(root->left), nodeHeight(root->right)) + 1;
-	child->height = higherHeight(nodeHeight(root->left), nodeHeight(root->right)) + 1;
+	child->height = higherHeight(nodeHeight(child->left), nodeHeight(child->right)) + 1;
 	
 	return child;
+}
+
+Node* rightRotation(Node *root) {
+	Node *child, *aux;
+	
+	child = root->left;
+	aux = child->right;
+	
+	child->right = root;
+	root->left = aux;
+	
+	root->height = higherHeight(nodeHeight(root->left), nodeHeight(root->right)) + 1;
+	child->height = higherHeight(nodeHeight(child->left), nodeHeight(child->right)) + 1;
+	
+	return child;
+}
+
+Node* rightLeftRotation(Node *root) {
+	root->right = rightRotation(root->right);
+	return leftRotation(root);
+}
+
+Node* leftRightRotation(Node *root) {
+	root->left = leftRotation(root->left);
+	return rightRotation(root);
+}
+
+Node* balanceTree(Node *root) {
+	int bf = balanceFactor(root);
+	int bfr = balanceFactor(root->right);
+	int bfl = balanceFactor(root->left);
+	
+	// left rotation
+	if(bf < -1 && bfr <= 0)
+		root = leftRotation(root);
+	else if(bf > 1 && bfl >= 0)
+		root = rightRotation(root);
+	else if(bf > 1 && bfl < 0)
+		root = leftRightRotation(root);
+	else if(bf < -1 && bfr > 0)
+		root = rightLeftRotation(root);
+	
+	return root;	
 }
 
 void printPreOrder(Node *root) {
