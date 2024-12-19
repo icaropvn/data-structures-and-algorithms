@@ -17,7 +17,7 @@
 ## Data Structures
 
 ### Stack
-- [Stack implementations]()
+- [Stack implementations](01. Data Structures/01. Stack/stack_operations)
 - [Stack challenges]()
 
 ## Algorithms
