@@ -18,6 +18,6 @@
 
 ### Stack
 - [Stack implementations](01.%20Data%20Structures/01.%20Stack/stack_operations)
-- [Stack challenges]()
+- [Stack challenges](01.%20Data%20Structures/01.%20Stack/stacks_challenges)
 
 ## Algorithms
