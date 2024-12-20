@@ -4,11 +4,11 @@
 
 <br>
 
-<p>This repository contains several data structures and algorithms used in computer science. Every structure has its implementation and variations along with some exercises and application scenarios. Below you can look for the structure you want in the repository index by clicking in the link on the corresponding area.</p>
+<p>This repository contains various data structures and algorithms commonly used in computer science. Each structure includes its implementation, variations, exercises, and application scenarios. You can find the structure you're looking for in the repository index by clicking the link in the corresponding section.</p>
 
-<p>The most algorithms were created by me, Ícaro. But feel yourself at home to correct or suggest whatever changes you think might be good.</p>
+<p>Most of the algorithms were developed by me, Ícaro. However, feel free to suggest improvements or corrections as you see fit.</p>
 
-<p><em>If my work helped you some way, don't forget to ⭐ this repo. Thank you!</em></p>
+<p><em>If you found my work helpful, please consider giving this repo a ⭐. Thank you!</em></p>
 
 <hr>
  
