@@ -1,6 +1,7 @@
 <div align="center">
-<img src="readme-assets/data-structures-repo-header.png" width="700"/>
 </div>
+
+<img src="readme-assets/data-structures-repo-header.png" width="700"/>
 
 <br>
 
