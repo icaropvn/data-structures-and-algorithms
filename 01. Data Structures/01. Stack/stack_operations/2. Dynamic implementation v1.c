@@ -34,6 +34,7 @@ int main() {
 				
 				if(removed) {
 					printf("\nNumber %i removed from the stack top.\n\n", removed->data);
+					free(removed);
 				}
 				break;
 			case 3:
@@ -62,7 +63,7 @@ Node* push(Node *top, int data) {
 	return NULL;
 }
 
-Node* pop(Node **top) {
+Node* pop(Node **top) {	
 	if(*top) {
 		Node *remove = *top;
 		*top = (*top)->next;

@@ -41,6 +41,7 @@ int main() {
 				
 				if(removed) {
 					printf("\nNumber %i removed from the stack top.\n\n", removed->data);
+					free(removed);
 				}
 				break;
 			case 3:
