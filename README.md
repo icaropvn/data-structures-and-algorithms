@@ -17,6 +17,10 @@
 
 ### Stack
 - [Stack implementations](01.%20Data%20Structures/01.%20Stack/stack_operations)
-- [Stack challenges](01.%20Data%20Structures/01.%20Stack/stacks_challenges)
+- [Stack exercises](01.%20Data%20Structures/01.%20Stack/stacks_challenges)
 
 ## Algorithms
+
+### Search Algorithms
+- [Linear Search](02.%20Algorithms/01.%20Search%20Algorithms/1.%20Linear%20search.c)
+- [Binary Search](02.%20Algorithms/01.%20Search%20Algorithms/2.%20Binary%20search.c)
